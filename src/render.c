@@ -422,7 +422,7 @@ static void render_con_stacked(Con *con, Con *child, render_params *p, int i) {
     child->rect.height = p->rect.height;
 
     child->deco_rect.x = p->x - con->rect.x;
-    child->deco_rect.y = p->y - con->rect.y + child->rect.height - (i * p->deco_height);
+    child->deco_rect.y = p->y - con->rect.y + child->rect.height + ((i - p->children) * p->deco_height);
     child->deco_rect.width = child->rect.width;
     child->deco_rect.height = p->deco_height;
 
