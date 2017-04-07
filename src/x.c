@@ -331,10 +331,10 @@ static void x_draw_title_border(Con *con, struct deco_render_params *p) {
     }
 
     draw_util_rectangle(&(con->parent->frame_buffer), p->color->border,
-                        dr->x, dr->y, dr->width, 1);
+                        dr->x, dr->y + dr->height - 1, dr->width, 1);
 
     draw_util_rectangle(&(con->parent->frame_buffer), p->color->border,
-                        dr->x + deco_diff_l, dr->y + dr->height - 1, dr->width - (deco_diff_l + deco_diff_r), 1);
+                        dr->x + deco_diff_l, dr->y, dr->width - (deco_diff_l + deco_diff_r), 1);
 }
 
 static void x_draw_decoration_after_title(Con *con, struct deco_render_params *p) {
@@ -491,13 +491,13 @@ void x_draw_decoration(Con *con) {
                                 p->color->child_border, r->width + (br.width + br.x), 0,
                                 -(br.width + br.x), r->height);
         }
-        if (!(borders_to_hide & ADJ_LOWER_SCREEN_EDGE)) {
+        if (p->border_style == BS_PIXEL && !(borders_to_hide & ADJ_LOWER_SCREEN_EDGE)) {
             draw_util_rectangle(&(con->frame_buffer),
                                 p->color->child_border, br.x, r->height + (br.height + br.y),
                                 r->width + br.width, -(br.height + br.y));
         }
         /* pixel border needs an additional line at the top */
-        if (p->border_style == BS_PIXEL && !(borders_to_hide & ADJ_UPPER_SCREEN_EDGE)) {
+        if (!(borders_to_hide & ADJ_UPPER_SCREEN_EDGE)) {
             draw_util_rectangle(&(con->frame_buffer),
                                 p->color->child_border, br.x, 0, r->width + br.width, br.y);
         }
