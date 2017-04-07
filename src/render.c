@@ -398,7 +398,7 @@ static void render_con_split(Con *con, Con *child, render_params *p, int i) {
         if (child->border_style == BS_NORMAL) {
             /* TODO: make a function for relative coords? */
             child->deco_rect.x = child->rect.x - con->rect.x;
-            child->deco_rect.y = child->rect.y - con->rect.y + child->rect.height - p->deco_height;
+            child->deco_rect.y = child->rect.y - con->rect.y;
 
             child->rect.height -= p->deco_height;
 
@@ -422,7 +422,7 @@ static void render_con_stacked(Con *con, Con *child, render_params *p, int i) {
     child->rect.height = p->rect.height;
 
     child->deco_rect.x = p->x - con->rect.x;
-    child->deco_rect.y = p->y - con->rect.y + child->rect.height + ((i - p->children) * p->deco_height);
+    child->deco_rect.y = p->y - con->rect.y + (i * p->deco_height);
     child->deco_rect.width = child->rect.width;
     child->deco_rect.height = p->deco_height;
 
@@ -441,7 +441,7 @@ static void render_con_tabbed(Con *con, Con *child, render_params *p, int i) {
 
     child->deco_rect.width = floor((float)child->rect.width / p->children);
     child->deco_rect.x = p->x - con->rect.x + i * child->deco_rect.width;
-    child->deco_rect.y = p->y - con->rect.y + child->rect.height - p->deco_height;
+    child->deco_rect.y = p->y - con->rect.y;
 
     /* Since the tab width may be something like 31,6 px per tab, we
      * let the last tab have all the extra space (0,6 * children). */

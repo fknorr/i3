@@ -704,8 +704,12 @@ void x_push_node(Con *con) {
     if (con->window == NULL) {
         /* Calculate the height of all window decorations which will be drawn on to
          * this frame. */
-        uint32_t max_y = 0, max_height = 0;
+        uint32_t client_height = 0, max_y = 0, max_height = 0;
         TAILQ_FOREACH(current, &(con->nodes_head), nodes) {
+            if (current->window != NULL) {
+                Rect *wr = &(current->window_rect);
+                client_height = wr->y + wr->height;
+            }
             Rect *dr = &(current->deco_rect);
             if (dr->y >= max_y && dr->height >= max_height) {
                 max_y = dr->y;
@@ -713,8 +717,11 @@ void x_push_node(Con *con) {
             }
         }
         rect.height = max_y + max_height;
-        if (rect.height == 0)
+        if (rect.height == 0) {
             con->mapped = false;
+        } else {
+            rect.y += client_height;
+        }
     }
 
     /* reparent the child window (when the window was moved due to a sticky
